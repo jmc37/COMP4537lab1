@@ -20,3 +20,9 @@ button {
   right: 10px;
   font-size: 40px;
 }
+#last_updated {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 40px;
+}
