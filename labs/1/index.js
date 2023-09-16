@@ -1,28 +1,21 @@
-// const express = require("express")
-// const app = express();
-
-// app.get("/",(req, res) =>{
-//     res.sendFile(path.join(__dirname, '/index.html'))
-// })
-// app.listen(process.env.PORT || 5500) 
-class Note{
+ class Note{
     constructor(id, text){
         this.id = id
         this.text = text
     }
 
     createElement(id, text) {
-        var componentContainer = document.createElement("div");
-        var newTextbox = document.createElement("input");
+        let componentContainer = document.createElement("div");
+        let newTextbox = document.createElement("input");
         newTextbox.type = "text";
         newTextbox.className = "note-input";
-        newTextbox.value = text || ""
-        newTextbox.id = id;
-        var removeButton = document.createElement("button");
+        newTextbox.value = this.text || ""
+        newTextbox.id = this.id;
+        let removeButton = document.createElement("button");
         removeButton.textContent = "Remove";
         
         // Add event listener to remove button
-        removeButton.addEventListener('click', () => noteManager.removeNote(id));
+        removeButton.addEventListener('click', () => noteManager.removeNote(this.id));
 
         componentContainer.appendChild(newTextbox);
         componentContainer.appendChild(removeButton);
@@ -39,7 +32,7 @@ class NoteManager{
     }
 
     createNote(){
-        var note = new Note("note#" + this.noteIndex, "");
+        let note = new Note("note#" + this.noteIndex, "");
         this.noteIndex += 1;
         this.notes.push(note)
         localStorage.setItem('notes', JSON.stringify(this.notes)); // Store relevant info
@@ -48,19 +41,31 @@ class NoteManager{
     }
 
     removeNote(id) {
-        this.noteIndex -=1
-        localStorage.setItem('note_index', this.noteIndex)
-        console.log(id)
-        console.log(this.notes)
-        var index = this.notes.indexOf(id)
-        this.notes.splice(index, 1)
-        console.log(this.notes)
-        localStorage.setItem('notes', JSON.stringify(this.notes));
-        
-        // Remove the element from the DOM
-        var elementToRemove = document.getElementById(id);
-        if (elementToRemove) {
-            elementToRemove.parentElement.remove(); // Remove the entire componentContainer
+        console.log(id);
+        console.log(this.notes);
+
+        // Find the index of the note by matching id
+        let index = this.notes.findIndex(note => note.id === id);
+        console.log(index);
+
+        if (index !== -1) { // Check if note with given id was found
+            this.notes.splice(index, 1); // Remove the note from the array
+
+            // Update localStorage
+            localStorage.setItem('notes', JSON.stringify(this.notes));
+
+            let elementToRemove = document.getElementById(id);
+            if (elementToRemove) {
+                elementToRemove.parentElement.remove(); // Remove the entire componentContainer
+            }
+
+            this.noteIndex -= 1;
+            localStorage.setItem('note_index', this.noteIndex);
+
+            // Log notes after removal for debugging
+            console.log(this.notes);
+        } else {
+            console.error(`Note with id ${id} not found.`);
         }
     }
     
@@ -71,7 +76,6 @@ class NoteManager{
         if(lastUpdatedTime){
             timestampElement.textContent = `Last updated: ${lastUpdatedTime || 'N/A'}`;
         }
-        console.log(this.notes)
         this.notes.forEach(noteData => {
             var note = new Note(noteData.id, noteData.text);
             this.container.appendChild(note.createElement(noteData.id, noteData.text));
@@ -79,10 +83,12 @@ class NoteManager{
     }
     displayNotesInReader() {
         const notesListElement = document.getElementById('notes-list');
-        console.log(notesListElement)
         const lastUpdatedElement = document.getElementById('last-updated');
+        let notes = JSON.parse(localStorage.getItem("notes"))
+        notesListElement.innerHTML = ""
+        console.log(notesListElement)
         console.log(this.notes)
-        this.notes.forEach(noteData => {
+        notes.forEach(noteData => {
             const noteElement = document.createElement('div');
             noteElement.textContent = noteData.text;
             notesListElement.appendChild(noteElement);
@@ -95,7 +101,8 @@ class NoteManager{
         const inputElements = document.querySelectorAll('.note-input');
         let notes_list = JSON.parse(localStorage.getItem('notes'));
         let index = 0
-        inputElements.forEach(input => {     
+        inputElements.forEach(input => {    
+            console.log(input.value) 
             notes_list[index].text = input.value 
             index++
         });
@@ -115,11 +122,10 @@ function clearLocalStorage() {
     localStorage.clear();
 }
 // clearLocalStorage()
-var noteManager = new NoteManager()
+let noteManager = new NoteManager()
 if (noteManager.currentPage === 'reader') {
-    noteManager.displayNotesInReader();
+    setInterval(noteManager.displayNotesInReader.bind(noteManager), 2000); // Update every 2 secs
 } else {
-    console.log()
     noteManager.displayNotes(); // Display existing notes
-    setInterval(noteManager.updateNotes.bind(noteManager), 9000); // Update every 2 minutes
+    setInterval(noteManager.updateNotes.bind(noteManager), 2000); // Update every 2 secs
 }
