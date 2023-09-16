@@ -1,0 +1,22 @@
+body {
+  text-align: center;
+}
+h1 {
+  font-size: 100px;
+}
+
+button {
+  font-size: 50px;
+  font-style: normal;
+}
+
+.grid-container {
+  display: grid;
+}
+
+#timestamp {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 40px;
+}
