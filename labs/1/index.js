@@ -66,6 +66,11 @@ class NoteManager{
     
 
     displayNotes(){
+        let timestampElement = document.getElementById('timestamp');
+        let lastUpdatedTime = localStorage.getItem('time')
+        if(lastUpdatedTime){
+            timestampElement.textContent = `Last updated: ${lastUpdatedTime || 'N/A'}`;
+        }
         console.log(this.notes)
         this.notes.forEach(noteData => {
             var note = new Note(noteData.id, noteData.text);
@@ -88,8 +93,8 @@ class NoteManager{
     }
     updateNotes(){
         const inputElements = document.querySelectorAll('.note-input');
-        var notes_list = JSON.parse(localStorage.getItem('notes'));
-        var index = 0
+        let notes_list = JSON.parse(localStorage.getItem('notes'));
+        let index = 0
         inputElements.forEach(input => {     
             notes_list[index].text = input.value 
             index++
@@ -101,7 +106,7 @@ class NoteManager{
         const seconds = currentTime.getSeconds().toString().padStart(2, '0');
         const formattedTime = `Last updated on: ${hours}:${minutes}:${seconds}`;
         localStorage.setItem('time', formattedTime)
-        var timestampElement = document.getElementById('timestamp');
+        let timestampElement = document.getElementById('timestamp');
         timestampElement.textContent = formattedTime
     }
 }
