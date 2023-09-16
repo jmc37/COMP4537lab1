@@ -1,10 +1,10 @@
-const express = require("express")
-const app = express();
+// const express = require("express")
+// const app = express();
 
-app.get("/",(req, res) =>{
-    res.sendFile(path.join(__dirname, '/index.html'))
-})
-app.listen(process.env.PORT || 5500) 
+// app.get("/",(req, res) =>{
+//     res.sendFile(path.join(__dirname, '/index.html'))
+// })
+// app.listen(process.env.PORT || 5500) 
 class Note{
     constructor(id, text){
         this.id = id
@@ -34,6 +34,7 @@ class NoteManager{
     constructor(){
         this.notes = JSON.parse(localStorage.getItem('notes')) || [];
         this.noteIndex = parseInt(localStorage.getItem('note_index')) || 0;
+        this.currentPage = window.location.pathname.includes('reader.html') ? 'reader' : 'writer';
         this.container = document.querySelector(".grid-container");
     }
 
@@ -71,7 +72,20 @@ class NoteManager{
             this.container.appendChild(note.createElement(noteData.id, noteData.text));
         });
     }
+    displayNotesInReader() {
+        const notesListElement = document.getElementById('notes-list');
+        console.log(notesListElement)
+        const lastUpdatedElement = document.getElementById('last-updated');
+        console.log(this.notes)
+        this.notes.forEach(noteData => {
+            const noteElement = document.createElement('div');
+            noteElement.textContent = noteData.text;
+            notesListElement.appendChild(noteElement);
+        });
 
+        const lastUpdatedTime = localStorage.getItem('time');
+        lastUpdatedElement.textContent = `Last updated: ${lastUpdatedTime || 'N/A'}`;
+    }
     updateNotes(){
         const inputElements = document.querySelectorAll('.note-input');
         var notes_list = JSON.parse(localStorage.getItem('notes'));
@@ -97,5 +111,10 @@ function clearLocalStorage() {
 }
 // clearLocalStorage()
 var noteManager = new NoteManager()
-noteManager.displayNotes(); // Display existing notes
-setInterval(noteManager.updateNotes.bind(noteManager), 9000); // Update every 2 minutes
+if (noteManager.currentPage === 'reader') {
+    noteManager.displayNotesInReader();
+} else {
+    console.log()
+    noteManager.displayNotes(); // Display existing notes
+    setInterval(noteManager.updateNotes.bind(noteManager), 9000); // Update every 2 minutes
+}
