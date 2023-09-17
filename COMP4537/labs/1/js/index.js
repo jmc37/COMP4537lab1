@@ -108,11 +108,7 @@ class NoteManager{
         });
         localStorage.setItem('notes', JSON.stringify(notes_list));
         const currentTime = new Date();
-        const hours = currentTime.getHours().toString().padStart(2, '0');
-        const minutes = currentTime.getMinutes().toString().padStart(2, '0');
-        const seconds = currentTime.getSeconds().toString().padStart(2, '0');
-        const formattedTime = `Last updated on: ${hours}:${minutes}:${seconds}`;
-        localStorage.setItem('time', formattedTime)
+        localStorage.setItem('time', `Stored at: ${currentTime.toLocaleTimeString()}`)
         let timestampElement = document.getElementById('timestamp');
         timestampElement.textContent = formattedTime
     }
