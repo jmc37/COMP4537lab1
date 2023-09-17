@@ -26,3 +26,34 @@ button {
   right: 10px;
   font-size: 40px;
 }
+/* Style for input */
+/* Style for input */
+input[type="text"] {
+  padding: 30px 20px; /* Increased vertical padding */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 28px; /* Larger text */
+  width: 50%; /* Half the width of the screen */
+  background-color: #4d90fe; /* Blue background */
+  color: #fff; /* White text color */
+  line-height: 1.6;
+  font-family: "Courier New", monospace; /* Monospace font for a classic look */
+  border-bottom: 2px solid #2a5c91; /* Darker underline */
+  resize: none; /* Disable resizing */
+  margin-bottom: 10px;
+}
+
+/* Style for input on focus */
+input[type="text"]:focus {
+  outline: none;
+  border-color: #4d90fe;
+  box-shadow: 0 0 5px rgba(77, 144, 254, 0.5);
+}
+
+#text-display {
+  font-size: 40px;
+  background-color: lightblue;
+  padding: 20px;
+  margin: 30px;
+}
