@@ -4,7 +4,6 @@ const lastUpdatedElement = document.getElementById('last-updated');
 class NoteManager{
     constructor(){
         this.notes = JSON.parse(localStorage.getItem('notes')) || [];
-        this.noteIndex = parseInt(localStorage.getItem('note_index')) || 0;
     }
     displayNotesInReader() {
         const notes = JSON.parse(localStorage.getItem("notes"))
@@ -18,10 +17,13 @@ class NoteManager{
         });
 
         const currentTime = new Date();
-        let formattedTime = `${currentTime.toLocaleTimeString()}`
-        lastUpdatedElement.textContent = `updated at: ${formattedTime || 'N/A'}`;
+        const formattedTime = `${currentTime.toLocaleTimeString()}`
+        lastUpdatedElement.textContent = `updated at: ${formattedTime}`;
     }
     
 }
-let noteManager = new NoteManager()
+const noteManager = new NoteManager()
+window.onload = function(){
+    noteManager.displayNotesInReader()
+}
 setInterval(noteManager.displayNotesInReader.bind(noteManager), 2000); // Update every 2 secs

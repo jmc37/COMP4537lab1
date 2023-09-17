@@ -27,20 +27,19 @@ button {
   font-size: 40px;
 }
 /* Style for input */
-/* Style for input */
 input[type="text"] {
-  padding: 30px 20px; /* Increased vertical padding */
+  padding: 30px 20px;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
-  font-size: 28px; /* Larger text */
-  width: 50%; /* Half the width of the screen */
-  background-color: #4d90fe; /* Blue background */
-  color: #fff; /* White text color */
+  font-size: 28px;
+  width: 50%;
+  background-color: #4d90fe;
+  color: #fff;
   line-height: 1.6;
-  font-family: "Courier New", monospace; /* Monospace font for a classic look */
-  border-bottom: 2px solid #2a5c91; /* Darker underline */
-  resize: none; /* Disable resizing */
+  font-family: "Courier New", monospace;
+  border-bottom: 2px solid #2a5c91;
+  resize: both;
   margin-bottom: 10px;
 }
 
