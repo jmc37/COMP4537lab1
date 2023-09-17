@@ -4,13 +4,15 @@
         this.text = text
     }
 
-    createElement(id, text) {
+    createElement() {
         let componentContainer = document.createElement("div");
         let newTextbox = document.createElement("input");
+
         newTextbox.type = "text";
         newTextbox.className = "note-input";
         newTextbox.value = this.text || ""
         newTextbox.id = this.id;
+
         let removeButton = document.createElement("button");
         removeButton.textContent = "Remove";
         
@@ -41,32 +43,21 @@ class NoteManager{
     }
 
     removeNote(id) {
-        console.log(id);
-        console.log(this.notes);
-
         // Find the index of the note by matching id
         let index = this.notes.findIndex(note => note.id === id);
-        console.log(index);
 
-        if (index !== -1) { // Check if note with given id was found
-            this.notes.splice(index, 1); // Remove the note from the array
+        this.notes.splice(index, 1); // Remove the note from the array
 
-            // Update localStorage
-            localStorage.setItem('notes', JSON.stringify(this.notes));
+        // Update localStorage
+        localStorage.setItem('notes', JSON.stringify(this.notes));
 
-            let elementToRemove = document.getElementById(id);
-            if (elementToRemove) {
-                elementToRemove.parentElement.remove(); // Remove the entire componentContainer
-            }
-
-            this.noteIndex -= 1;
-            localStorage.setItem('note_index', this.noteIndex);
-
-            // Log notes after removal for debugging
-            console.log(this.notes);
-        } else {
-            console.error(`Note with id ${id} not found.`);
+        let elementToRemove = document.getElementById(id);
+        if (elementToRemove) {
+            elementToRemove.parentElement.remove(); // Remove the entire componentContainer
         }
+
+        this.noteIndex -= 1;
+        localStorage.setItem('note_index', this.noteIndex);
     }
     
 
